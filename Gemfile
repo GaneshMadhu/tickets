@@ -36,6 +36,11 @@ gem 'bootstrap-sass', '~> 3.2.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'rspec-rails'
+  gem 'rails-controller-testing'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
+  gem 'database_cleaner', '~> 1.5.0'
 end
 
 group :development do
