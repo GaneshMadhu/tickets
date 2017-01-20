@@ -41,6 +41,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'database_cleaner', '~> 1.5.0'
+  gem 'capybara'
 end
 
 group :development do
