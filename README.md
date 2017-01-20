@@ -1,24 +1,58 @@
-# README
+# Assumptions:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ * Ruby is installed
 
-Things you may want to cover:
+ * Rails is installed
 
-* Ruby version
+ * Git is installed
 
-* System dependencies
+ * Postgres
 
-* Configuration
+# Project Setup
 
-* Database creation
+* Go to the required directory to clone the application and run 'git clone https://github.com/GaneshMadhu/tickets.git'.
 
-* Database initialization
+* cd 'project root directory'
 
-* How to run the test suite
+* run 'bundle install' to install the dependencies.
 
-* Services (job queues, cache servers, search engines, etc.)
+* configure the database.yml with adapter as 'postgresql' and proper access to the database.
 
-* Deployment instructions
+* run 'rake db:create' and then migrate the database.
 
-* ...
+* run 'rake db:seed' to seed the database with the initial data.
+
+* start the server and visit the application (http://localhost:3000/ - with default port)
+
+```sh
+git clone https://github.com/GaneshMadhu/tickets.git
+cd tickets
+bundle install
+rake db:create
+rake db:migrate
+rake db:seed
+```
+
+# CLI Interface
+
+Inside the application directory, run 'ruby lib/ticket_manager.rb' to check the functionality through Command Line Interface.
+
+```sh
+ruby lib/ticket_manager.rb
+```
+
+# Unite Testing
+
+Test Suite has been added with RSpec and Capybara.
+
+  - run 'rspec spec' to cover all the test cases.
+
+  - run 'rspec spec/controllers' to test the controller functionalities.
+
+  - run 'rspec spec/features' to test the feature specs.
+
+```sh
+rspec spec
+rspec spec/controllers
+rspec spec/features
+```
