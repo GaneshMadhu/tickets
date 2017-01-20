@@ -1,8 +1,6 @@
-<%= form_for(ticket) do |f| %>
+<%= form_for(ticket, html: {class: "form-horizontal"}) do |f| %>
   <% if ticket.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(ticket.errors.count, "error") %> prohibited this ticket from being saved:</h2>
-
       <ul>
       <% ticket.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -11,42 +9,62 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :created_by %>
-    <%= f.text_area :created_by %>
+  <div class="form-group">
+    <%= f.label :created_by, class: "control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= f.text_area :created_by, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
+  <div class="form-group">
+    <%= f.label :description, class: "control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= f.text_area :description, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :severity %>
-    <%= f.number_field :severity %>
+  <div class="form-group">
+    <%= f.label :severity, class: "control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= f.number_field :severity, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :status %>
-    <%= f.select :status, options_for_select(Ticket.statuses.map { |key, value| [key, key] },@ticket.status), { include_blank: true} %>
-  </div>
+  <% unless @ticket.new_record? %>
+    <div class="form-group">
+      <%= f.label :status, class: "control-label col-sm-2" %>
+      <div class="col-sm-6">
+        <%= f.select :status, options_for_select(Ticket.statuses.map { |key, value| [key, key] },@ticket.status), { include_blank: true }, class: "form-control" %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :cancelled_reason %>
-    <%= f.select :cancelled_reason, options_for_select(Ticket.cancelled_reasons.map { |key, value| [key, key] },@ticket.status), { include_blank: true} %>
-  </div>
+    <div class="cancelled_wrapper <%= 'hide' unless @ticket.status.eql? 'cancelled' %>">
+      <div class="form-group">
+        <%= f.label :cancelled_reason, class: "control-label col-sm-2" %>
+        <div class="col-sm-6">
+          <%= f.select :cancelled_reason, options_for_select(Ticket.cancelled_reasons.map { |key, value| [key, key] },@ticket.cancelled_reason), { include_blank: false }, class: "form-control" %>
+        </div>
+      </div>
 
-  <div class="field">
-    <%= f.label :cancelled_other_description %>
-    <%= f.text_area :cancelled_other_description %>
-  </div>
+      <div class="form-group cancelled_other_desc <%= 'hide' unless @ticket.cancelled_reason.eql? 'others' %>">
+        <%= f.label :cancelled_other_description, class: "control-label col-sm-2" %>
+        <div class="col-sm-6">
+          <%= f.text_area :cancelled_other_description, class: "form-control" %>
+        </div>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :comments %>
-    <%= f.text_area :comments %>
-  </div>
+    <div class="completed_wrapper <%= 'hide' unless @ticket.status.eql? 'completed' %>">
+      <div class="form-group">
+        <%= f.label :comments, class: "control-label col-sm-2" %>
+        <div class="col-sm-6">
+          <%= f.text_area :comments, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit nil, class: "btn btn-success" %>
   </div>
 <% end %>
