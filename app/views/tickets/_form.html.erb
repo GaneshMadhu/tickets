@@ -1,0 +1,52 @@
+<%= form_for(ticket) do |f| %>
+  <% if ticket.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(ticket.errors.count, "error") %> prohibited this ticket from being saved:</h2>
+
+      <ul>
+      <% ticket.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :created_by %>
+    <%= f.text_area :created_by %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :severity %>
+    <%= f.number_field :severity %>
+  </div>
+
+  <div class="field">
+    <%= f.label :status %>
+    <%= f.select :status, options_for_select(Ticket.statuses.map { |key, value| [key, key] },@ticket.status), { include_blank: true} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cancelled_reason %>
+    <%= f.select :cancelled_reason, options_for_select(Ticket.cancelled_reasons.map { |key, value| [key, key] },@ticket.status), { include_blank: true} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cancelled_other_description %>
+    <%= f.text_area :cancelled_other_description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comments %>
+    <%= f.text_area :comments %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

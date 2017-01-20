@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @ticket.created_by %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @ticket.description %>
+</p>
+
+<p>
+  <strong>Severity:</strong>
+  <%= @ticket.severity %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @ticket.status %>
+</p>
+
+<p>
+  <strong>Cancelled reason:</strong>
+  <%= @ticket.cancelled_reason %>
+</p>
+
+<p>
+  <strong>Cancelled other description:</strong>
+  <%= @ticket.cancelled_other_description %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @ticket.comments %>
+</p>
+
+<%= link_to 'Edit', edit_ticket_path(@ticket) %> |
+<%= link_to 'Back', tickets_path %>
