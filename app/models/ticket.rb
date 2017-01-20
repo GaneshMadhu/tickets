@@ -2,7 +2,8 @@ class Ticket < ApplicationRecord
 
   before_validation :check_status
 
-  validates_presence_of :created_by, :description, :severity
+  validates_presence_of :created_by, :description
+  validates :severity, numericality: { only_integer: true }
 
   validate :cancelled_reason_desc
 
@@ -12,7 +13,11 @@ class Ticket < ApplicationRecord
   private
 
   def check_status
-    self.cancelled_reason = nil unless self.status.eql? 'cancelled'
+    unless self.status.eql? 'cancelled'
+      self.cancelled_reason = nil
+      self.cancelled_other_description = ""
+    end
+    self.comments = "" unless self.status.eql? 'completed'
   end
 
   def cancelled_reason_desc
