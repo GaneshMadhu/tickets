@@ -18,7 +18,7 @@ RSpec.describe TicketsController, type: :controller do
 
   describe '#create' do
     it 'creates a new ticket' do
-      post :create, {ticket: {created_by: "Test Create", description: "Test Ticket", severity: 1}}
+      post :create, params: {ticket: {created_by: "Test Create", description: "Test Ticket", severity: 1}}
       expect(response).to have_http_status(302)
       expect(response).to redirect_to '/tickets'
     end
@@ -26,7 +26,7 @@ RSpec.describe TicketsController, type: :controller do
 
   describe '#update' do
     it 'updates a ticket' do
-      patch :update, {id: 5, ticket: {created_by: "Test Update"}}
+      patch :update, params: {id: 5, ticket: {created_by: "Test Update"}}
       expect(response).to have_http_status(302)
       expect(response).to redirect_to '/tickets'
     end
