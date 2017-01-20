@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170120102002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "tickets", force: :cascade do |t|
+    t.text     "created_by"
+    t.text     "description"
+    t.integer  "severity"
+    t.integer  "status"
+    t.integer  "cancelled_reason"
+    t.text     "cancelled_other_description"
+    t.text     "comments"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["severity"], name: "index_tickets_on_severity", using: :btree
+    t.index ["status"], name: "index_tickets_on_status", using: :btree
+  end
 
 end

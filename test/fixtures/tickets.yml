@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  created_by: MyText
+  description: MyText
+  severity: 1
+  status: 1
+  cancelled_reason: 1
+  cancelled_other_description: MyText
+  comments: MyText
+
+two:
+  created_by: MyText
+  description: MyText
+  severity: 1
+  status: 1
+  cancelled_reason: 1
+  cancelled_other_description: MyText
+  comments: MyText
