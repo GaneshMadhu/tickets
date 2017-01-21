@@ -47,11 +47,20 @@ class CreateTicket
 
     def get_default_details
       puts "Created By(text)?"
-      create_ticket[:created_by]  = gets.chomp
+      mandatory_check(:created_by)
       puts "Description(text)?"
-      create_ticket[:description] = gets.chomp
+      mandatory_check(:description)
       puts "Severity(integer)?"
-      create_ticket[:severity]    = gets.chomp
+      mandatory_check(:severity)
+    end
+
+    def mandatory_check(attribute)
+      loop do
+        input = gets.chomp
+        next if input.blank?
+        create_ticket[attribute]  = input
+        break
+      end
     end
 end
 
