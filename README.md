@@ -35,6 +35,8 @@ rake db:seed
 
 # CLI Interface
 
+**Note:** Please make sure to seed the database with rake db:seed.
+
 Inside the application directory, run 'ruby lib/ticket_manager.rb' to check the functionality through Command Line Interface.
 
 ```sh
