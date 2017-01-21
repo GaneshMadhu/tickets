@@ -2,11 +2,10 @@ require File.expand_path('../../config/environment',  __FILE__)
 require 'ticket'
 
 class TicketManager
-  attr_reader :ticket_detail, :tickets
+  attr_reader :ticket_detail
 
   def initialize
     @ticket_detail = {}
-    @tickets       = Ticket.all
     new_or_existing?
   end
 
@@ -16,11 +15,9 @@ class TicketManager
     puts "Select one option \n1) Create a new ticket \n2) Edit an existing ticket"
     case gets.strip
       when "1"
-        get_default_details
-        Ticket.create(ticket_detail)
+        CreateTicket.new ticket_detail
       when "2"
-        get_status
-        Ticket.update(ticket_detail["id"],ticket_detail)
+        EditTicket.new ticket_detail
       else
         puts "Select from the options specified"
         new_or_existing?
@@ -29,73 +26,114 @@ class TicketManager
     exit
   end
 
-  def get_default_details
-    puts "Created By(text)?"
-    ticket_detail[:created_by]  = gets.chomp
-    puts "Description(text)?"
-    ticket_detail[:description] = gets.chomp
-    puts "Severity(integer)?"
-    ticket_detail[:severity]    = gets.chomp
-  end
-
-  def get_status
-    select_ticket
-    puts "1) Complete a ticket \n2) Cancel a ticket"
-    case gets.strip
-      when "1"
-        complete_ticket
-      when "2"
-        cancel_ticket
-      else
-        puts "Choose from the existing options."
-        get_status
-    end
-  end
-
-  def select_ticket
-    ticket = {}
-    loop do
-      puts print_existing_tickets
-      input_id = gets.strip
-      ticket   = tickets.find(input_id.to_i) || {}
-      break unless ticket.blank?
-    end
-    ticket.as_json.map{|k,v| ticket_detail[k] = v}
-  end
-
-  def complete_ticket
-    ticket_detail[:status]   = 'completed'
-    puts "Comments?"
-    ticket_detail[:comments] = gets.chomp
-  end
-
-  def cancel_ticket
-    ticket_detail[:status] = 'cancelled'
-    puts "Reason? \n1) EndUser \n2) Others"
-    case gets.strip
-      when "1"
-        ticket_detail[:cancelled_reason] = "end_user"
-      when "2"
-        ticket_detail[:cancelled_reason] = "others"
-        puts "Reason(text)?"
-        ticket_detail[:cancelled_other_description] = gets.chomp
-      else
-        puts "Choose from the existing options."
-        cancel_ticket
-    end
-  end
-
   def print_details
     ticket_detail.each do |label,detail|
       p "#{label.capitalize} - #{detail}"
     end
   end
+end
 
-  def print_existing_tickets
-    tickets.sort.each do |ticket|
-      puts "#{ticket.id}) #{ticket.description}"
+class CreateTicket
+  attr_reader :create_ticket
+
+  def initialize(create_ticket)
+    @create_ticket = create_ticket
+    get_default_details
+    Ticket.create(create_ticket)
+    @create_ticket
+  end
+
+  private
+
+    def get_default_details
+      puts "Created By(text)?"
+      create_ticket[:created_by]  = gets.chomp
+      puts "Description(text)?"
+      create_ticket[:description] = gets.chomp
+      puts "Severity(integer)?"
+      create_ticket[:severity]    = gets.chomp
     end
-    puts "Please select a ticket."
+end
+
+class EditTicket
+  attr_reader :edit_ticket, :tickets
+
+  def initialize(edit_ticket)
+    @edit_ticket = edit_ticket
+    @tickets     = Ticket.all
+    p "No Tickets available. Please run rake db:seed" and exit if @tickets.blank?
+    select_ticket
+    get_status
+    Ticket.update(edit_ticket["id"],edit_ticket)
+    @edit_ticket
+  end
+
+  private
+
+    def get_status
+      puts "1) Complete a ticket \n2) Cancel a ticket"
+      case gets.strip
+        when "1"
+          edit_ticket.merge! CompleteTicket.complete
+        when "2"
+          CancelTicket.new(edit_ticket).cancel
+        else
+          puts "Choose from the existing options."
+          get_status
+      end
+    end
+
+    def select_ticket
+      ticket = {}
+      loop do
+        puts print_existing_tickets
+        input_id = gets.strip
+        ticket   = tickets.find(input_id.to_i) rescue {}
+        break unless ticket.blank?
+      end
+      ticket.as_json.map{|k,v| edit_ticket[k] = v}
+    end
+
+    def print_existing_tickets
+      tickets.sort.each do |ticket|
+        puts "#{ticket.id}) #{ticket.description}"
+      end
+      puts "Please select an existing ticket."
+    end
+end
+
+class CompleteTicket
+  def self.complete
+    complete_ticket = {}
+    complete_ticket["status"]   = 'completed'
+    puts "Comments?"
+    complete_ticket["comments"] = gets.chomp
+    complete_ticket
+  end
+end
+
+class CancelTicket
+  attr_reader :cancel_ticket
+
+  def initialize(cancel_ticket)
+    @cancel_ticket = cancel_ticket
+  end
+
+  def cancel
+    cancel_ticket["status"] = 'cancelled'
+    puts "Reason? \n1) EndUser \n2) Others"
+    case gets.strip
+      when "1"
+        cancel_ticket["cancelled_reason"] = "end_user"
+      when "2"
+        cancel_ticket["cancelled_reason"] = "others"
+        puts "Reason(text)?"
+        cancel_ticket["cancelled_other_description"] = gets.chomp
+      else
+        puts "Choose from the existing options."
+        cancel
+    end
+    cancel_ticket
   end
 end
 
