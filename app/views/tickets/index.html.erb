@@ -28,7 +28,7 @@
         <td><%= ticket.cancelled_reason %></td>
         <td><%= ticket.cancelled_other_description %></td>
         <td><%= ticket.comments %></td>
-        <td><%= link_to 'Edit', edit_ticket_path(ticket) %></td>
+        <td><%= link_to 'Edit', edit_ticket_path(ticket) if ticket.status.blank? %></td>
         <td><%= link_to 'Destroy', ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

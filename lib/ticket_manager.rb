@@ -15,7 +15,7 @@ class TicketManager
     puts "Select one option \n1) Create a new ticket \n2) Edit an existing ticket"
     case gets.strip
       when "1"
-        CreateTicket.new ticket_detail
+        CreateTicket.new(ticket_detail).create
       when "2"
         EditTicket.new ticket_detail
       else
@@ -38,9 +38,12 @@ class CreateTicket
 
   def initialize(create_ticket)
     @create_ticket = create_ticket
+  end
+
+  def create
     get_default_details
     Ticket.create(create_ticket)
-    @create_ticket
+    create_ticket
   end
 
   private
@@ -69,7 +72,7 @@ class EditTicket
 
   def initialize(edit_ticket)
     @edit_ticket = edit_ticket
-    @tickets     = Ticket.all
+    @tickets     = Ticket.where(status: nil)
     p "No Tickets available. Please run rake db:seed" and exit if @tickets.blank?
     select_ticket
     get_status

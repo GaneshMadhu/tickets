@@ -18,6 +18,7 @@ class Ticket < ApplicationRecord
       self.cancelled_other_description = ""
     end
     self.comments = "" unless self.status.eql? 'completed'
+    self.status   = nil if self.status.blank?
   end
 
   def cancelled_reason_desc
