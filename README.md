@@ -6,11 +6,11 @@
 
  * Git is installed
 
- * Postgres
+ * Postgres is installed
 
 # Project Setup
 
-* Go to the required directory to clone the application and run 'git clone https://github.com/GaneshMadhu/tickets.git'.
+* Clone the application - 'git clone https://github.com/GaneshMadhu/tickets.git'.
 
 * cd 'project root directory'
 
@@ -35,7 +35,7 @@ rake db:seed
 
 # CLI Interface
 
-**Note:** Please make sure to seed the database with rake db:seed.
+**Note:** Please make sure that the database is properly set before running the script and seed the database with rake db:seed.
 
 Inside the application directory, run 'ruby lib/ticket_manager.rb' to check the functionality through Command Line Interface.
 
@@ -54,7 +54,7 @@ Test Suite has been added with RSpec and Capybara.
   - run 'rspec spec/features' to test the feature specs.
 
 ```sh
-rspec spec
+rspec spec --format d
 rspec spec/controllers
 rspec spec/features
 ```
