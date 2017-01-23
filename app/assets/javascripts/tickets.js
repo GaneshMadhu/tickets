@@ -7,7 +7,7 @@ $(function(){
     }
     else if(status == "cancelled"){
       elements_to_hide($('.completed_wrapper'));
-      elements_to_show($('.cancelled_wrapper,#ticket_cancelled_reason'));
+      elements_to_show($('.cancelled_wrapper,#ticket_cancelled_reason,.cancelled_other_desc'));
       clear_elements($('#ticket_cancelled_other_description,#ticket_comments'));
     }
     else if(status == 'completed'){

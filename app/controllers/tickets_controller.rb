@@ -13,6 +13,7 @@ class TicketsController < ApplicationController
   end
 
   def edit
+    redirect_to tickets_url if @ticket && @ticket.status
   end
 
   def create
